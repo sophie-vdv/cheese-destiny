@@ -1,0 +1,57 @@
+var Options = function(game) {};
+
+Options.prototype = {
+
+  menuConfig: {
+    startY: 260,
+    startX: "center"
+  },
+
+  init: function () {
+      this.titleText = game.make.text(game.world.centerX, 100, "Laurens &", {
+          font: 'bold 30pt gamerfont',
+          fill: '#fff',
+          align: 'center'
+      });
+
+      this.subTitleText = game.make.text(game.world.centerX, 150, "The Cheese of Destiny", {
+          font: 'bold 20pt gamerfont',
+          fill: '#fff',
+          align: 'center'
+      });
+
+      this.titleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+      this.titleText.anchor.set(0.5);
+
+      this.subTitleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+      this.subTitleText.anchor.set(0.5);
+
+      this.optionCount = 1;
+  },
+
+  create: function () {
+    var playSound = gameOptions.playSound,
+        playMusic = gameOptions.playMusic;
+
+    game.add.sprite(0, 0, 'options-bg');
+    game.add.existing(this.titleText);
+    game.add.existing(this.subTitleText);
+
+    this.addMenuOption(playMusic ? 'Mute Music' : 'Play Music', function (target) {
+      playMusic = !playMusic;
+      target.text = playMusic ? 'Mute Music' : 'Play Music';
+      musicPlayer.volume = playMusic ? 1 : 0;
+    });
+
+    this.addMenuOption(playSound ? 'Mute Sound' : 'Play Sound', function (target) {
+      playSound = !playSound;
+      target.text = playSound ? 'Mute Sound' : 'Play Sound';
+    });
+
+    this.addMenuOption('<- Back', function () {
+      game.state.start("GameMenu");
+    });
+  }
+};
+
+Phaser.Utils.mixinPrototype(Options.prototype, mixins);
